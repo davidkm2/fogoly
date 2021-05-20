@@ -1,4 +1,4 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #define foglyokszama 10
 #define T 5
 #define L 5
@@ -33,17 +33,19 @@ int main() {
 	struct Fogoly foglyok[L][L];
 	char dontesek[2] = { 'C', 'D' };
 	srand(time(0));
-	//Inicializ�l�s, mindenkinek legyen valami d�nt�se kezdetben, nyerem�ny 0
+	//Inicializálás, mindenkinek legyen valami döntése kezdetben, nyeremény 0
 	for (int i = 0; i < L; i++) {
 		for (int j = 0; j < L; j++) {
 			struct Fogoly ujfogoly;
 			ujfogoly.dontes = dontesek[rand() % 2];
 			ujfogoly.nyeremeny = 0;
 			foglyok[i][j] = ujfogoly;
-			//printf("Fogoly: %d , d�nt�se: %c \n", i, foglyok[i].dontes);
+			//printf("Fogoly: %d , döntése: %c \n", i, foglyok[i].dontes);
 		}
 	}
 	int iteracioszam = 0;
+	double aranyok[L * L];
+	double iteraciok[L * L];
 	while (iteracioszam < L * L) {
 		printf("------------------------------------------------------\n\n\n");
 		printf("%d . iteracio\n", iteracioszam);
@@ -128,29 +130,22 @@ int main() {
 			}
 		}
 		printf("A tanitvany nyeremenye 4 jatszma utan: %d\n", foglyok[tanitvanyxidx][tanitvanyyidx].nyeremeny);
-
+		if (w(foglyok[mesterxidx][mesteryidx].nyeremeny, foglyok[tanitvanyxidx][tanitvanyyidx].nyeremeny) > rand() % 101) {
+			foglyok[tanitvanyxidx][tanitvanyyidx].dontes = w(foglyok[mesterxidx][mesteryidx].dontes;
+			printf("A tanitvany atvette a mester strategiajat!\n");
+		}
+		else {
+			printf("A tanitvany nem vette at a mester strategiajat!");
+		}
+		aranyok[iteracioszam] = (double)egyuttmukodok / (double)8;
+		iteraciok[iteracioszam] = iteracioszam;
 		iteracioszam++;
 	}
-
-
-	char* commandsForGnuplot[] = { "set title \"TITLEEEEE\"", "plot 'data.temp'" };
-	//double xvals[NUM_POINTS] = { 1.0, 2.0, 3.0, 4.0, 5.0 };
-	//double yvals[NUM_POINTS] = { 5.0 ,3.0, 1.0, 3.0, 5.0 };
-	FILE* temp = fopen("data.temp", "w");
-	/*Opens an interface that one can use to send commands as if they were typing into the
-	 *     gnuplot command line.  "The -persistent" keeps the plot open even after your
-	 *     C program terminates.
-	 */
-	FILE* gnuplotPipe = popen("gnuplot -persistent", "w");
-	int i;
-	for (i = 0; i < NUM_POINTS; i++)
-	{
-		fprintf(temp, "%lf %lf \n", xvals[i], yvals[i]); //Write the data to a temporary file
+	printf("Együttmûködések iterációszám szerint:\n");
+	for (int i = 0; i < iteracioszam; i++) {
+		printf("%d iteracio: %f\n", i, aranyok[i]);
 	}
 
-	for (i = 0; i < NUM_COMMANDS; i++)
-	{
-		fprintf(gnuplotPipe, "%s \n", commandsForGnuplot[i]); //Send commands to gnuplot one by one.
-	}
+
 	return 0;
 }
